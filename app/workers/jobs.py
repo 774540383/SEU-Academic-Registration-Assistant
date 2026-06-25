@@ -44,4 +44,10 @@ async def run_operation(operation_id: int):
         db.close()
 
 def start_background(operation_id: int):
-    asyncio.create_task(run_operation(operation_id))
+    import threading
+
+    def runner():
+        asyncio.run(run_operation(operation_id))
+
+    thread = threading.Thread(target=runner, daemon=True)
+    thread.start()
