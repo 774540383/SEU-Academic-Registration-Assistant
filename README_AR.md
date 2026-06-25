@@ -1,0 +1,61 @@
+# SEU Academic Registration Assistant
+
+خدمة ويب تساعدك على إضافة طالب، تشغيل تحليل حقيقي من Banner، جلب الخطة الرسمية من موقع الجامعة، ثم توليد تقرير PDF.
+
+## مهم جدًا
+- لا تستخدم هذه الخدمة إلا لحسابات لديك إذن صريح باستخدامها.
+- غيّر كلمة مرور المشرف قبل الرفع.
+- لا تعتمد على الاستضافة المجانية للبيانات الحساسة إلا للتجربة. الأفضل VPS خاص.
+- إذا فشل Banner بسبب تحقق إضافي أو حظر دخول من السيرفر، سيحفظ النظام Screenshot و HTML في مجلد screenshots.
+- النظام لا يعطي بيانات وهمية. إذا لم يستطع الجلب الحقيقي سيظهر فشل واضح.
+
+## التشغيل على Render من الجوال
+
+### 1) ارفع الملفات إلى GitHub
+من الجوال:
+1. افتح GitHub.
+2. أنشئ Repository جديد باسم `seu-assistant`.
+3. ارفع ملف ZIP بعد فكّه أو استخدم GitHub web upload.
+4. تأكد أن الملفات في جذر الريبو: `Dockerfile`, `render.yaml`, `app/`, `requirements.txt`.
+
+### 2) أنشئ الخدمة على Render
+1. افتح Render.
+2. New + ثم Web Service.
+3. Connect GitHub.
+4. اختر الريبو.
+5. Render سيقرأ Dockerfile تلقائيًا.
+6. أضف متغيرات البيئة:
+   - `ADMIN_USERNAME=admin`
+   - `ADMIN_PASSWORD=ضع_كلمة_قوية`
+   - `APP_SECRET_KEY=ضع_سر_طويل_عشوائي`
+   - `ALLOW_FINAL_REGISTRATION=false`
+7. اضغط Deploy.
+
+### 3) الاستخدام
+1. افتح رابط Render.
+2. سجل دخولك كمشرف.
+3. أضف طالب.
+4. اضغط تشغيل التحليل الحقيقي.
+5. راقب التقدم.
+6. حمّل تقرير PDF.
+
+## ملاحظات على Render المجاني
+قد ينام التطبيق بعد فترة، وقد تكون الذاكرة ضعيفة للمتصفح الآلي. إذا فشل بسبب الذاكرة أو تحقق Banner، استخدم VPS خاص.
+
+## التشغيل المحلي اختياري
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+playwright install chromium
+uvicorn app.main:app --reload --port 10000
+```
+
+## الملفات المهمة
+- `app/main.py`: لوحة التحكم.
+- `app/banner/client.py`: دخول Banner واستخراج كشف الدرجات.
+- `app/curriculum/crawler.py`: جلب الخطة الرسمية.
+- `app/analytics/engine.py`: تحليل المواد والأهلية.
+- `app/reports/pdf.py`: إنشاء التقرير.
+- `render.yaml`: إعداد Render.
+- `Dockerfile`: بناء الخدمة.

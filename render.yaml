@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: seu-academic-registration-assistant
+    env: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: APP_SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./data/app.db
+      - key: ALLOW_FINAL_REGISTRATION
+        value: false
