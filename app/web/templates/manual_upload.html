@@ -1,0 +1,20 @@
+{% extends 'base.html' %}{% block content %}
+<div class="card">
+<h2>الوضع المضمون: تسجيل دخول يدوي + تحليل تلقائي</h2>
+<p><b>{{student.label}}</b> - {{student.banner_username}}</p>
+<p>استخدم هذا الوضع عندما يمنع Banner الدخول من Render أو يطلب تحققًا إضافيًا.</p>
+<ol>
+<li>افتح Banner بنفسك من المتصفح وسجّل دخولك.</li>
+<li>افتح صفحة كشف الدرجات.</li>
+<li>اختر <b>Undergraduate</b> ثم <b>Web</b> واعرض الكشف.</li>
+<li>انسخ مصدر الصفحة HTML كاملًا أو محتوى الصفحة كاملًا والصقه هنا.</li>
+<li>النظام سيستخرج المواد، يجلب الخطة الرسمية من موقع الجامعة، ويولد التقرير.</li>
+</ol>
+<form method="post" action="/students/{{student.id}}/manual">
+<textarea name="transcript_html" style="width:100%;min-height:360px;padding:12px;border:1px solid #ddd;border-radius:8px" placeholder="الصق هنا HTML صفحة Web Transcript أو النص الكامل لصفحة كشف الدرجات بعد تسجيل الدخول" required></textarea>
+<br><br>
+<button class="btn">تحليل الكشف المرفوع وإنشاء التقرير</button>
+</form>
+<p class="muted">لا ترفع كلمة المرور هنا. المطلوب فقط صفحة كشف الدرجات بعد ظهور المواد.</p>
+</div>
+{% endblock %}
